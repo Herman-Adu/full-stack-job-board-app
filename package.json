@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.600.0",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-brands-svg-icons": "^6.5.2",
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
@@ -17,10 +18,12 @@
     "@radix-ui/themes": "^3.1.1",
     "@workos-inc/authkit-nextjs": "^0.6.1",
     "@workos-inc/node": "^7.11.0",
+    "axios": "^1.7.2",
     "next": "14.2.4",
     "react": "^18",
     "react-country-state-city": "^1.1.2",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "uniqid": "^5.4.0"
   },
   "devDependencies": {
     "@types/node": "^20",
