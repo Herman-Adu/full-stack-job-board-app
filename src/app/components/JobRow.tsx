@@ -1,9 +1,11 @@
 'use client'
 
+import TimeAgo from "@/app//components/TimeAgo";
 import type { Job } from "@/models/Job";
 import {faHeart} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import TimeAgo from 'react-timeago'
+import axios from "axios";
+import Link from "next/link";
 
 
 export default function JobRow({jobDoc}:{jobDoc:Job}) {
@@ -23,13 +25,37 @@ export default function JobRow({jobDoc}:{jobDoc:Job}) {
                     </div>
                     <div className="sm:flex grow">
                         <div className="grow">
-                            <div className="text-gray-500 text-sm">{jobDoc.orgName || '?'}</div>
+                            <div>
+                                <Link href={`/jobs/${jobDoc.orgId}`} className="text-gray-500 text-sm">{jobDoc.orgName || '?'}</Link>
+                            </div>
+                            
                             <div className="font-bold text-lg mb-1">{jobDoc.title}</div>
-                            <div className="text-gray-400 text-sm">Remote &middot; United Kingdom &middot; Full-time</div>     
+                            <div className="text-gray-400 text-sm capitalize">
+                                {jobDoc.remote}
+                                {' '}&middot;{' '}
+                                {jobDoc.city}, {jobDoc.country}
+                                {' '}&middot;{' '}
+                                {jobDoc.type}-time
+                                {jobDoc.isAdmin && (
+                                    <>
+                                        {' '}&middot;{' '}
+                                        <Link href={'/jobs/edit/' + jobDoc._id}>Edit</Link>
+                                        {' '}&middot;{' '}
+                                        <button 
+                                            type="button" 
+                                            onClick={async () => {
+                                                await axios.delete('/api/jobs?id='+jobDoc._id);
+                                                window.location.reload();
+                                            }}>                                        
+                                            Delete
+                                        </button>
+                                    </>
+                                )}
+                            </div>     
                         </div> 
                         {jobDoc.createdAt && (
                             <div className="content-end text-gray-500 text-sm">
-                                <TimeAgo date={jobDoc.createdAt} />
+                                 <TimeAgo createdAt={jobDoc.createdAt} />
                             </div> 
                         )} 
                                                 

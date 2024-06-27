@@ -8,14 +8,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {IconDefinition, faSpinner} from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 
-
-
-export default function ImageUpload({name, icon}:{name:string; icon:IconDefinition}) {
+export default function ImageUpload({
+    name, icon, defaultValue=''
+}:{
+    name:string; 
+    icon:IconDefinition; 
+    defaultValue:string;
+}) {
 
     const fileInRef = useRef<HTMLInputElement>(null);
-    const [url, setUrl] = useState('');
     const [isUploading, setIsUploading] = useState(false);
     const [isImageLoading, setIsImageLoading] = useState(false);
+    const [url, setUrl] = useState(defaultValue);
 
     async function upload(ev:ChangeEvent<HTMLInputElement>) {
 

@@ -1,8 +1,7 @@
 import JobForm from "@/app/components/JobForm";
 import { getUser } from "@workos-inc/authkit-nextjs";
-
 import { WorkOS } from "@workos-inc/node";
-import '@radix-ui/themes/styles.css';
+
 
 type PageProps = {
     params: {
