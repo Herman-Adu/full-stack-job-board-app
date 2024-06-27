@@ -1,8 +1,12 @@
+'use client'
+
+import type { Job } from "@/models/Job";
 import {faHeart} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import TimeAgo from 'react-timeago'
 
 
-export default function JobRow() {
+export default function JobRow({jobDoc}:{jobDoc:Job}) {
     return (
         <>
             <div className="bg-white p-4 rounded-lg shadow-sm relative">
@@ -19,13 +23,16 @@ export default function JobRow() {
                     </div>
                     <div className="sm:flex grow">
                         <div className="grow">
-                            <div className="text-gray-500 text-sm">Spotify</div>
-                            <div className="font-bold text-lg mb-1">Product Designer</div>
+                            <div className="text-gray-500 text-sm">{jobDoc.orgName || '?'}</div>
+                            <div className="font-bold text-lg mb-1">{jobDoc.title}</div>
                             <div className="text-gray-400 text-sm">Remote &middot; United Kingdom &middot; Full-time</div>     
-                        </div>  
-                        <div className="content-end text-gray-500 text-sm">
-                            2 weeks ago
-                        </div>                         
+                        </div> 
+                        {jobDoc.createdAt && (
+                            <div className="content-end text-gray-500 text-sm">
+                                <TimeAgo date={jobDoc.createdAt} />
+                            </div> 
+                        )} 
+                                                
                     </div>
                 </div>             
             </div>

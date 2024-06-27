@@ -42,24 +42,22 @@ export default async function NewListingPage() {
                 <h2 className="text-lg mt-6">Your companies</h2>
                 <p className="text-gray-500 text-sm mb-4">Select a company to create a job for</p>
                 <div>
-                <div className="border inline-block rounded-md">
-                    {Object.keys(organizationsNames).map((orgId, index) => (
-                    <Link
-                        key={index}
-                        href={'/new-listing/' + orgId}
-                        className={
-                            "py-2 px-4 flex gap-2 items-center "
-                            + (Object.keys(organizationsNames)[0] === orgId ? '' : 'border-t')
-                        }
-                    >
-                        {organizationsNames[orgId]}
-                        <FontAwesomeIcon className="h-4" icon={faArrowRight} />
-                    </Link>
-                    ))}
+                    <div className="border inline-block rounded-md">
+                        {Object.keys(organizationsNames).map((orgId, index) => (
+                        <Link
+                            key={index}
+                            href={'/new-listing/' + orgId}
+                            className={
+                                "py-2 px-4 flex gap-2 items-center "
+                                + (Object.keys(organizationsNames)[0] === orgId ? '' : 'border-t')
+                            }
+                        >
+                            {organizationsNames[orgId]}
+                            <FontAwesomeIcon className="h-4" icon={faArrowRight} />
+                        </Link>
+                        ))}
+                    </div>
                 </div>
-                </div>
-
-                
                 
                 {organizationMemberships.data.filter(om => om.status === "active").map((om, index) => (
                     <div key={index}>

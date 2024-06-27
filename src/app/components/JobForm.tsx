@@ -5,6 +5,9 @@ import { Button, RadioGroup, TextArea, TextField, Theme } from '@radix-ui/themes
 
 import {faEnvelope, faMobile, faPhone, faStar, faUser} from '@fortawesome/free-solid-svg-icons';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ImageUpload from './ImageUpload';
+
 import {
     CitySelect,
     CountrySelect,
@@ -12,23 +15,41 @@ import {
   } from 'react-country-state-city';
 
 import 'react-country-state-city/dist/react-country-state-city.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ImageUpload from './ImageUpload';
+import { saveJobAction } from '../actions/jobActions';
 
-export default function  JobForm() {
+import { redirect } from 'next/navigation';
+
+
+export default function  JobForm({orgId}:{orgId:string}) {
     const [countryId, setCountryId] = useState(0);
     const [stateId, setStateId] = useState(0);
     const [cityId, setCityId] = useState(0);
+    const [countryName, setCountryName] = useState('');
+    const [stateName, setStateName] = useState('');
+    const [cityName, setCityName] = useState('');
+
+    async function handleSaveJob(data:FormData) {
+        data.set('country', countryName.toString());
+        data.set('state', stateName.toString());
+        data.set('city', cityName.toString());
+        data.set('orgId', orgId)
+
+        const jobDoc = await saveJobAction(data)
+
+        console.log("JobForm - handleSaveJob - jobDoc: ", jobDoc)
+
+        redirect(`/jobs/${jobDoc.orgId}`)        
+    }
 
     return (
         <Theme>
             <form 
-                action=''
+                action={handleSaveJob}
                 className='container mt-6 flex flex-col gap-4'
             >
                 {/* {JSON.stringify(props)} */}
                 <TextField.Root name='title' placeholder='Job title' />                
-                <div className='grid grid-cols-3 gap-6 *:grow'>
+                <div className='grid sm:grid-cols-3 gap-6 *:grow'>
                     <div>
                         Remote?
                         <RadioGroup.Root defaultValue='hybrid' name='remote'>
@@ -60,10 +81,11 @@ export default function  JobForm() {
                 </div>
                 <div>
                     loaction?
-                    <div className='flex gap-4 *:grow'>
+                    <div className='flex flex-col sm:flex-row gap-4 *:grow'>
                         <CountrySelect
                             onChange={(e:any) => {
                                 setCountryId(e.id);
+                                setCountryName(e.name);
                             }}
                             placeHolder='Select Country'
                         />
@@ -71,6 +93,7 @@ export default function  JobForm() {
                             countryid={countryId}
                             onChange={(e:any) => {
                                 setStateId(e.id);
+                                setStateName(e.name)
                             }}
                             placeHolder='Select State'
                         />
@@ -79,12 +102,13 @@ export default function  JobForm() {
                             stateid={stateId}
                             onChange={(e:any) => {
                                 setCityId(e.id);
+                                setCityName(e.name)
                             }}
                             placeHolder='Select City'
                         />
                     </div>                        
                 </div>
-                <div className='flex'>
+                <div className='sm:flex'>
                     <div className='w-1/3'>
                         <h3>Job icon</h3>
                         <ImageUpload name='jobIcon' icon={faStar} />
@@ -93,20 +117,20 @@ export default function  JobForm() {
                         <h3>contact person</h3>
                         <div className='flex gap-2'>
                             <div className=''>
-                                <ImageUpload name='personPhoto' icon={faUser} />
+                                <ImageUpload name='contactPhoto' icon={faUser} />
                             </div>
                             <div className='grow flex flex-col gap-1'>
-                                <TextField.Root placeholder='John Doe' name='name'>
+                                <TextField.Root placeholder='John Doe' name='contactName'>
                                     <TextField.Slot>
                                         <FontAwesomeIcon icon={faUser} className='text-gray-400' />
                                     </TextField.Slot>
                                 </TextField.Root>
-                                <TextField.Root placeholder='phone' name='phone'>
+                                <TextField.Root placeholder='phone' name='contactPhone'>
                                     <TextField.Slot>
                                         <FontAwesomeIcon icon={faPhone} className='text-gray-400' />
                                     </TextField.Slot>
                                 </TextField.Root>
-                                <TextField.Root placeholder='Email' name='email'>
+                                <TextField.Root placeholder='Email' name='contactEmail'>
                                     <TextField.Slot>
                                         <FontAwesomeIcon icon={faEnvelope} className='text-gray-400' />
                                     </TextField.Slot>
